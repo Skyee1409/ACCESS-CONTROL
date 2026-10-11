@@ -1,0 +1,291 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-midnight: #080D1B;
+  --surface-dark: #111A2E;
+  --surface-card: #15223D;
+  --surface-border: #1E3156;
+  --accent-blue: #4F8CFF;
+  --accent-cyan: #35D5E8;
+  --accent-green: #36D399;
+  --accent-amber: #FFBF69;
+  --accent-coral: #FF5C8A;
+  --text-main: #F3F6FC;
+  --text-secondary: #A8B3C7;
+  --text-muted: #64748B;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Fira Code', 'JetBrains Mono', monospace;
+  --font-heading: 'Plus Jakarta Sans', var(--font-sans);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-midnight);
+  color: var(--text-main);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  user-select: none;
+}
+
+/* Custom Cyber Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-midnight);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--surface-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-blue);
+}
+
+/* Typography Helpers */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-main);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* Glassmorphism & Cyber Card Effects */
+.cyber-card {
+  background: rgba(17, 26, 46, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--surface-border);
+  border-radius: 12px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cyber-card:hover {
+  border-color: rgba(79, 140, 255, 0.4);
+  box-shadow: 0 8px 30px rgba(8, 13, 27, 0.6), 0 0 15px rgba(79, 140, 255, 0.12);
+}
+
+.cyber-card-active {
+  border-color: var(--accent-cyan) !important;
+  box-shadow: 0 0 20px rgba(53, 213, 232, 0.25) !important;
+}
+
+.cyber-gradient-text {
+  background: linear-gradient(135deg, #F3F6FC 0%, #35D5E8 50%, #4F8CFF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cyber-gradient-gold {
+  background: linear-gradient(135deg, #FFF 0%, #FFBF69 60%, #FF8A00 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* 16:9 Presentation Stage */
+.presentation-viewport {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-midnight);
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(79, 140, 255, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(53, 213, 232, 0.06) 0%, transparent 45%),
+    linear-gradient(rgba(30, 49, 86, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 49, 86, 0.15) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+  overflow: hidden;
+}
+
+.slide-canvas-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 24px;
+  min-height: 0;
+  position: relative;
+}
+
+/* Maintain true 16:9 aspect ratio container */
+.slide-frame {
+  width: 100%;
+  max-width: 1560px;
+  aspect-ratio: 16 / 9;
+  max-height: calc(100vh - 120px);
+  background: #0E1629;
+  border: 1px solid var(--surface-border);
+  border-radius: 16px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(79, 140, 255, 0.07);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Inside Slide Content Area */
+.slide-content-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 28px 36px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* Animations */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.985) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.slide-enter-animation {
+  animation: fadeInScale 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 4px var(--accent-cyan));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 12px var(--accent-cyan));
+  }
+}
+
+.pulse-glow {
+  animation: pulseGlow 3s infinite ease-in-out;
+}
+
+/* Controls & Buttons */
+.cyber-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  color: var(--text-main);
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.cyber-button:hover:not(:disabled) {
+  background: #1C2D4F;
+  border-color: var(--accent-blue);
+  color: #FFF;
+  box-shadow: 0 0 12px rgba(79, 140, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.cyber-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cyber-button-primary {
+  background: linear-gradient(135deg, #3A73E4 0%, #2055BD 100%);
+  border-color: var(--accent-blue);
+  color: #FFF;
+}
+
+.cyber-button-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #4F8CFF 0%, #2968E8 100%);
+  box-shadow: 0 0 16px rgba(79, 140, 255, 0.5);
+}
+
+.cyber-button-cyan {
+  background: rgba(53, 213, 232, 0.15);
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+}
+
+.cyber-button-cyan:hover:not(:disabled) {
+  background: rgba(53, 213, 232, 0.25);
+  box-shadow: 0 0 14px rgba(53, 213, 232, 0.4);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-family: var(--font-mono);
+}
+
+.badge-blue {
+  background: rgba(79, 140, 255, 0.15);
+  border: 1px solid rgba(79, 140, 255, 0.4);
+  color: #72A5FF;
+}
+
+.badge-cyan {
+  background: rgba(53, 213, 232, 0.15);
+  border: 1px solid rgba(53, 213, 232, 0.4);
+  color: #35D5E8;
+}
+
+.badge-green {
+  background: rgba(54, 211, 153, 0.15);
+  border: 1px solid rgba(54, 211, 153, 0.4);
+  color: #36D399;
+}
+
+.badge-amber {
+  background: rgba(255, 191, 105, 0.15);
+  border: 1px solid rgba(255, 191, 105, 0.4);
+  color: #FFBF69;
+}
+
+.badge-coral {
+  background: rgba(255, 92, 138, 0.15);
+  border: 1px solid rgba(255, 92, 138, 0.4);
+  color: #FF5C8A;
+}
+
+/* Modals & Drawers */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 8, 18, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
